@@ -2,12 +2,11 @@ import React, {useState, useEffect} from 'react'
 import './Stats.css';
 import { OrderService } from './services/orderService';
 
-
 function Stats () {
 
     const [ top5prod, setTop5prod ] = useState([]);
-    const [ top5unique, setTop5unique ] = useState([]);
-    const [ pas5Days, setPas5Days ] = useState([]);
+    const [ top5un, setTop5un ] = useState([]);
+    const [ pas5D, setPas5D ] = useState([]);
 
     useEffect(() => {
         getTop5();
@@ -31,6 +30,7 @@ function Stats () {
                 buyProductsArr.length = 5;
                 setTop5prod(buyProductsArr);
             })
+        }
 
     function getTop5unique () {
         OrderService.getAll ()
@@ -40,15 +40,14 @@ function Stats () {
                     for (let product of order.order) {
                         if (!buyProducts[product._id]) {
                             buyProducts[product._id] = {product: product};
-                        }
-                      
+                        }    
                     }
                 }
                 let buyProductsArr = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
                 buyProductsArr.length = 5;
-                setTop5unique(buyProductsArr);
+                setTop5un(buyProductsArr);
             })
-    }
+        }
 
     function getPas5Days  () {
         OrderService.getAll ()
@@ -64,9 +63,9 @@ function Stats () {
                 }
                 let buyProductsArr = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
                 buyProductsArr.length = 5;
-                setPas5Days(buyProductsArr);
+                setPas5D(buyProductsArr);
             })
-    }
+        }
 
         return (
             <div className="top-sale">
@@ -74,18 +73,18 @@ function Stats () {
                     <div className="product-box">
                         <b>Top 5 sale</b>
                         {top5prod.map(product => 
-                            <span key={product._id}>{product.title}</span>
+                            <div key={product._id}>{product.title}</div>
                         )}
                     </div>
                     <div className="product-box">
                         <b>Top unique sale</b>
-                        {top5unique.map(product => 
-                         <span key={product._id}>{product.title}</span>
+                        {top5un.map(product => 
+                         <h1 key={product._id}>{product.title}</h1>
                          )}
                     </div>
                     <div className="product-box">
                         <b>past 5 day $</b>
-                        {pas5Days.map(product => 
+                        {pas5D.map(product => 
                          <span key={product._id}>{product.title}{product.date}</span>
                          )}
                     </div>
@@ -93,6 +92,6 @@ function Stats () {
             </div>
         )
     }
-}
+
 
 export default Stats;
