@@ -27,18 +27,24 @@ function Stats () {
                     }
                     if (!top5Unique[top5Unique._id]) {
                         top5unique[ top5unique._id] = {top5Unique: top5Unique, amount: 0};
-                        setTop5unique(buyProducts);
                     }
                     top5unique[top5Unique._id].amount += top5Unique.amount;
                 }
                 if (!pas5Days[pas5Days._id]) {
                     pas5Days[pas5Days._id] = {pas5Days: pas5Days, amount: 0};
-                    setPas5Days(top5Unique);
                 }
                 
                 let buyProductsArr = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
                 buyProductsArr.length = 5;
-                setTop5prod(pas5Days);
+                setTop5prod(buyProductsArr);
+             
+                let buyProductsUnique = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
+                buyProductsArr.length = 5;
+                setTop5unique (buyProductsUnique);
+            
+                let buyPas5Days = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
+                buyProductsArr.length = 5;
+                setPas5Days(buyPas5Days);
             })
         }
 
