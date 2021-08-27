@@ -5,19 +5,19 @@ import { OrderService } from './services/orderService';
 function Stats () {
 
     const [ top5prod, setTop5prod ] = useState([]);
-    const [ top5un, setTop5un ] = useState([]);
-    const [ pas5D, setPas5D ] = useState([]);
+    const [ top5unique, setTop5unique ] = useState([]);
+    const [ pas5Days, setPas5Days ] = useState([]);
 
     useEffect(() => {
         getTop5();
-        getTop5unique();
-        getPas5Days();
     });
 
     function getTop5 () {
         OrderService.getAll ()
             .then(orders => {
                 let buyProducts = {};
+                let top5Unique = {};
+                let pas5Days = {};
                 for (let order of orders) {
                     for (let product of order.order) {
                         if (!buyProducts[product._id]) {
@@ -25,45 +25,20 @@ function Stats () {
                         }
                         buyProducts[product._id].amount += product.amount;
                     }
-                }
-                let buyProductsArr = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
-                buyProductsArr.length = 5;
-                setTop5prod(buyProductsArr);
-            })
-        }
-
-    function getTop5unique () {
-        OrderService.getAll ()
-            .then(orders => {
-                let buyProducts = {};
-                for (let order of orders) {
-                    for (let product of order.order) {
-                        if (!buyProducts[product._id]) {
-                            buyProducts[product._id] = {product: product};
-                        }    
+                    if (!top5Unique[top5Unique._id]) {
+                        top5unique[ top5unique._id] = {top5Unique: top5Unique, amount: 0};
+                        setTop5unique(buyProducts);
                     }
+                    top5unique[top5Unique._id].amount += top5Unique.amount;
                 }
+                if (!pas5Days[pas5Days._id]) {
+                    pas5Days[pas5Days._id] = {pas5Days: pas5Days, amount: 0};
+                    setPas5Days(top5Unique);
+                }
+                
                 let buyProductsArr = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
                 buyProductsArr.length = 5;
-                setTop5un(buyProductsArr);
-            })
-        }
-
-    function getPas5Days  () {
-        OrderService.getAll ()
-            .then(orders => {
-                let buyProducts = {};
-                for (let order of orders) {
-                    for (let product of order.order) {
-                        if (!buyProducts[product._id]) {
-                            buyProducts[product._id] = {product: product, amount: 0};
-                        }
-                        buyProducts[product._id].amount += product.amount;
-                    }
-                }
-                let buyProductsArr = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
-                buyProductsArr.length = 5;
-                setPas5D(buyProductsArr);
+                setTop5prod(pas5Days);
             })
         }
 
@@ -78,20 +53,19 @@ function Stats () {
                     </div>
                     <div className="product-box">
                         <b>Top unique sale</b>
-                        {top5un.map(product => 
+                        {top5unique.map(product => 
                          <h1 key={product._id}>{product.title}</h1>
                          )}
                     </div>
                     <div className="product-box">
                         <b>past 5 day $</b>
-                        {pas5D.map(product => 
-                         <span key={product._id}>{product.title}{product.date}</span>
-                         )}
+                        {pas5Days.map(product => 
+                            <span key={product._id}>{product.title}{product.date}</span>
+                        )}
                     </div>
                 </div>
             </div>
         )
     }
-
 
 export default Stats;
