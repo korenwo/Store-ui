@@ -33,17 +33,18 @@ function Stats () {
                 if (!pas5Days[pas5Days._id]) {
                     pas5Days[pas5Days._id] = {pas5Days: pas5Days, amount: 0};
                 }
-                
+            
                 let buyProductsArr = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
                 buyProductsArr.length = 5;
                 setTop5prod(buyProductsArr);
-             
-                let buyProductsUnique = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
-                buyProductsArr.length = 5;
-                setTop5unique (buyProductsUnique);
-            
-                let buyPas5Days = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
-                buyProductsArr.length = 5;
+
+                 
+                let buyProductsUnique = Object.values(top5Unique).sort((a,b) => b.amount - a.amount);
+                top5Unique.length = 5;
+                setTop5unique(buyProductsUnique);
+
+                let buyPas5Days = Object.values(pas5Days).sort((a,b) => b.amount - a.amount);
+                pas5Days.length = 5;
                 setPas5Days(buyPas5Days);
             })
         }
