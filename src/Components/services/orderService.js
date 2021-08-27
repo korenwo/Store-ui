@@ -23,7 +23,8 @@ export class OrderService {
         }
         let req = {
             order: order,
-            price: sum //can instead write - order.reduce((sum, product) => sum + parseInt(product.price)*product.amount, 0)
+            price: sum,
+            date: Date.now()
         };
         const res = await fetch(environment.apiUrl + '/orders/pay', {
             method: 'POST',

@@ -6,73 +6,82 @@ function Stats () {
 
     const [ top5prod, setTop5prod ] = useState([]);
     const [ top5unique, setTop5unique ] = useState([]);
-    const [ pas5Days, setPas5Days ] = useState([]);
+    const [ past5Days, setPast5Days ] = useState([]);
 
     useEffect(() => {
-        getTop5();
-    });
+        loadStats();
+    }, []);
 
-    function getTop5 () {
+    function loadStats () {
         OrderService.getAll ()
             .then(orders => {
-                let buyProducts = {};
-                let top5Unique = {};
-                let pas5Days = {};
+                let top5Map = {};
+                let top5UniqueMap = {};
+                let past5DaysMap = {};
+
                 for (let order of orders) {
+                    
+                    let day = new Date(order.date).toLocaleDateString();
+                    if (!past5DaysMap[day]) {
+                        past5DaysMap[day] = {day: day, price: 0};
+                    }
+                    past5DaysMap[day].price += order.price;
+                    
                     for (let product of order.order) {
-                        if (!buyProducts[product._id]) {
-                            buyProducts[product._id] = {product: product, amount: 0};
+                       
+                        if (!top5Map[product._id]) {
+                            top5Map[product._id] = {product: product, amount: 0};
                         }
-                        buyProducts[product._id].amount += product.amount;
-                    }
-                    if (!top5Unique[top5Unique._id]) {
-                        top5unique[ top5unique._id] = {top5Unique: top5Unique, amount: 0};
-                    }
-                    top5unique[top5Unique._id].amount += top5Unique.amount;
-                }
-                if (!pas5Days[pas5Days._id]) {
-                    pas5Days[pas5Days._id] = {pas5Days: pas5Days, amount: 0};
-                }
-            
-                let buyProductsArr = Object.values(buyProducts).sort((a,b) => b.amount - a.amount);
-                buyProductsArr.length = 5;
-                setTop5prod(buyProductsArr);
+                        top5Map[product._id].amount += product.amount;
 
+                        if (!top5UniqueMap[product._id]) {
+                            top5UniqueMap[product._id] = {product: product, amount: 0};
+                        }
+                        top5UniqueMap[product._id].amount++;
+
+                    }  
+                }
+                
+                let top5ProductsArr = Object.values(top5Map).sort((a,b) => b.amount - a.amount);
+                top5ProductsArr.length = 5;
+                setTop5prod(top5ProductsArr);
                  
-                let buyProductsUnique = Object.values(top5Unique).sort((a,b) => b.amount - a.amount);
-                top5Unique.length = 5;
-                setTop5unique(buyProductsUnique);
+                let top5UniqueArr = Object.values(top5UniqueMap).sort((a,b) => b.amount - a.amount);
+                top5UniqueArr.length = 5;
+                setTop5unique(top5UniqueArr);
 
-                let buyPas5Days = Object.values(pas5Days).sort((a,b) => b.amount - a.amount);
-                pas5Days.length = 5;
-                setPas5Days(buyPas5Days);
+                let past5DaysArr = Object.values(past5DaysMap).reverse();
+                past5DaysArr.length = 5;
+                setPast5Days(past5DaysArr);
             })
-        }
+            .catch(e => console.error('Error loading API', e));
+    }
 
-        return (
-            <div className="top-sale">
-                <div className="products-container">
-                    <div className="product-box">
-                        <b>Top 5 sale</b>
-                        {top5prod.map(product => 
-                            <div key={product._id}>{product.title}</div>
-                        )}
-                    </div>
-                    <div className="product-box">
-                        <b>Top unique sale</b>
-                        {top5unique.map(product => 
-                         <h1 key={product._id}>{product.title}</h1>
-                         )}
-                    </div>
-                    <div className="product-box">
-                        <b>past 5 day $</b>
-                        {pas5Days.map(product => 
-                            <span key={product._id}>{product.title}{product.date}</span>
-                        )}
-                    </div>
+    return (
+        <div className="top-sale">
+            <div className="products-container">
+                <div className="product-box">
+                    <b>Top 5 sale</b>
+                    {top5prod.map(product => 
+                        <div key={product.product._id}>{product.product.title} - {product.amount}</div>
+                    )}
+                </div>
+                <div className="product-box">
+                    <b>Top unique sale</b>
+                    {top5unique.map(product =>
+                        <div key={product.product._id}>{product.product.title} - {product.amount}</div>
+                    )}
+                </div>
+                <div className="product-box">
+                    <b>past 5 day $</b>
+                    {past5Days.map(day => 
+                        <div key={day.day}>{day.day} - {day.price}$</div>
+                    )}
                 </div>
             </div>
-        )
-    }
+        </div>
+    );
+
+}
 
 export default Stats;
