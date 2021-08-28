@@ -1,6 +1,4 @@
-
-
 export const production= {
-    apiUrl: 'https://nameless-spire-68315.herokuapp.com'
+    apiUrl: 'https://git.heroku.com/mighty-forest-56995.git'
 };
 
