@@ -3,7 +3,7 @@ import environment from '../../environments/index'
 export class ProductService {
 
   static getAll () {
-    return fetch(environment.apiUrl + '/product._id', {
+    return fetch(environment.apiUrl + '/getAll', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
