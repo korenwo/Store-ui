@@ -3,7 +3,7 @@ import environment from '../../environments/index'
 export class ProductService {
 
   static getAll () {
-    return fetch('https://git.heroku.com/mighty-forest-56995.git' + '/getAll', {
+    return fetch(environment.apiUrl + '/product._id', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ export class ProductService {
   }
 
   static edit (product) {
-    return fetch('https://git.heroku.com/mighty-forest-56995.git' + '/' + product._id, {
+    return fetch(environment.apiUrl + '/' + product._id, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ export class ProductService {
   }
 
   static async delete (product) {
-    return fetch('https://git.heroku.com/mighty-forest-56995.git'+ '/' + product._id , {
+    return fetch(environment.apiUrl + '/' + product._id , {
         method: 'DELETE'
     });
   }
