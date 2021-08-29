@@ -3,6 +3,7 @@ import './Home.css';
 import { useState, useEffect } from 'react';
 import { ProductService } from './services/product.service';
 import { OrderService } from './services/orderService';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const [ showShoppingCart, setShowShoppingCart] = useState(false);
@@ -75,6 +76,9 @@ const Home = () => {
                     </div>
                 ))}
             </div>
+            <Link to="/admin">Admin</Link>
+            <br></br>
+            <Link to="/stats">Stats</Link>
         </>
     );
 }
