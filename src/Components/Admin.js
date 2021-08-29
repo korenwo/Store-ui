@@ -3,6 +3,7 @@ import './Admin.css';
 import { ProductService } from './services/product.service';
 import Modal from "react-modal";
 import ProductForm from './ProductForm';
+import { Link } from 'react-router-dom';
 
 Modal.setAppElement("#root");
 
@@ -69,6 +70,7 @@ function Admin() {
                     ))}
                 </tbody>
             </table>
+            <Link to="/">Home</Link>
         </div>
     )
 }
