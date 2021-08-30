@@ -4,6 +4,7 @@ import { ProductService } from './services/product.service';
 import Modal from "react-modal";
 import ProductForm from './ProductForm';
 import { Link } from 'react-router-dom';
+import { GrUserAdmin } from 'react-icons/gr'
 
 Modal.setAppElement("#root");
 
@@ -29,6 +30,9 @@ function Admin() {
 
     return (
         <div>
+            <div className= "admin">
+                <GrUserAdmin/>
+            </div>
             <button onClick={() => setShowAddForm(true)}>Add</button>
             
             <Modal
