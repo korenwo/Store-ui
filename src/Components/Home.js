@@ -5,6 +5,7 @@ import { ProductService } from './services/product.service';
 import { OrderService } from './services/orderService';
 import { Link } from 'react-router-dom';
 import { HiOutlineShoppingCart } from 'react-icons/hi';
+import { AiOutlineShop } from 'react-icons/ai';
 
 const Home = () => {
     const [ showShoppingCart, setShowShoppingCart] = useState(false);
@@ -54,8 +55,9 @@ const Home = () => {
     return (
         <>
             <div className="shopping-cart">
-                <div className= "shopping">
+                <div className="header"> My-Shop
                     <HiOutlineShoppingCart />
+                    <AiOutlineShop />
                 </div>
                 <button onClick={() => setShowShoppingCart(!showShoppingCart)}>Shopping Cart</button>
                 {showShoppingCart ?  
