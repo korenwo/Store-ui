@@ -55,10 +55,10 @@ const Home = () => {
     return (
         <>
             <div className="shopping-cart">
-                <div className="header"> My-Shop
-                    <HiOutlineShoppingCart />
-                    <AiOutlineShop />
-                </div>
+                    <h1 className="header"> My-Shop
+                        <HiOutlineShoppingCart />
+                        <AiOutlineShop />
+                    </h1>
                 <button onClick={() => setShowShoppingCart(!showShoppingCart)}>Shopping Cart</button>
                 {showShoppingCart ?  
                     <div className="cart-content">

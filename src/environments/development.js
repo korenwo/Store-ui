@@ -1,3 +1,3 @@
 export const development= {
-    apiUrl: 'http://localhost:4001'
+    apiUrl: 'https://mighty-forest-56995.herokuapp.com'
 };
